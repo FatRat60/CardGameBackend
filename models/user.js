@@ -19,8 +19,14 @@ const UserSchema = new mongoose.Schema(
         profile: {
             type: String,
         },
+        money: {
+            type: Number,
+        },
         wins: {
-            type: Integer,
+            type: Number,
+        },
+        gamesPlayed: {
+            type: Number,
         },
 },
 
