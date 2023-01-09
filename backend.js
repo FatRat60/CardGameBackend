@@ -51,3 +51,6 @@ app.post("/signup", async (req, res) => {
     }
 });
 
+app.listen(port, () => {
+    console.log("REST API is listening on port " + port + ".");
+});

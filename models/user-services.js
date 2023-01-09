@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uri = "mongodb+srv://main.x8vxshx.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
 const UserSchema = require("./user");
 
 let dbConnection;
@@ -10,7 +11,7 @@ function setConnection(newConn) {
 
 function getDbConnection() {
     if (!dbConnection) {
-        dbConnection = mongoose.createConnection("Garsh", {
+        dbConnection = mongoose.createConnection(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
