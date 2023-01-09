@@ -13,7 +13,7 @@ const dbUser = { username: "", password: ""};
 app.post("/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const retrievedList = await userServices.findUserByUsernmae(username);
+    const retrievedList = await userServices.findUserByUsername(username);
     const retrievedUser = retrievedList[0];
 
     if (retrievedUser && retrievedUser.username != undefined) {
@@ -36,7 +36,7 @@ app.post("/signup", async (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    user_search = await userServices.findUserByUsernmae(username);
+    user_search = await userServices.findUserByUsername(username);
     if (!username && !email && !password) res.status(400).send("Poor request");
     else{
         if (user_search.length > 0) res.status(400).send("username taken");
@@ -48,6 +48,16 @@ app.post("/signup", async (req, res) => {
             if (!savedUser) res.status(500).end();
             else res.status(201).send();
         }
+    }
+});
+
+app.get("/user/:username", async (req, res) => {
+    const user_name = req.params["username"];
+    const result = await userServices.findUserByUsername(user_name);
+    if (result === undefined || result === null) {
+        res.status(404).send("Resource not found.");
+    } else {
+        res.status(200).send(result[0]);
     }
 });
 

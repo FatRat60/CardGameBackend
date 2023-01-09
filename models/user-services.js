@@ -19,7 +19,7 @@ function getDbConnection() {
     return dbConnection;
 }
 
-async function findUserByUsernmae(username) {
+async function findUserByUsername(username) {
     const userModel = getDbConnection().model("user", UserSchema);
     const result = await userModel.find({ username: username });
     return result;
@@ -27,7 +27,7 @@ async function findUserByUsernmae(username) {
 
 async function addUser(user) {
     const userModel = getDbConnection().model("user", UserSchema);
-    const userCheck = await findUserByUsernmae(user.username);
+    const userCheck = await findUserByUsername(user.username);
     if (userCheck.length != 0) return false;
     try {
         const userToAdd = new userModel(user);
@@ -40,7 +40,7 @@ async function addUser(user) {
 }
 
 async function updateUser(newUser) {
-    const userCheck = await findUserByUsernmae(newUser.username);
+    const userCheck = await findUserByUsername(newUser.username);
     if (userCheck.length == 0) return false;
     oldUser = userCheck[0];
     try {
@@ -53,6 +53,6 @@ async function updateUser(newUser) {
     }
 }
 
-exports.findUserByUsernmae = findUserByUsernmae;
+exports.findUserByUsername = findUserByUsername;
 exports.addUser = addUser;
 exports.updateUser = updateUser;
