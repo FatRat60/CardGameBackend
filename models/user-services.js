@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://main.x8vxshx.mongodb.net/?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
+const uri = "mongodb+srv://<FatRat360>:<!YpgZFz.W.B72@g>@main.x8vxshx.mongodb.net/?retryWrites=true&w=majority";
 const UserSchema = require("./user");
 
 let dbConnection;
@@ -11,7 +11,8 @@ function setConnection(newConn) {
 
 function getDbConnection() {
     if (!dbConnection) {
-        dbConnection = mongoose.createConnection(uri, {
+        console.log("trying connection");
+        dbConnection = mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -20,8 +21,7 @@ function getDbConnection() {
 }
 
 async function findUserByUsername(username) {
-    const userModel = getDbConnection().model("user", UserSchema);
-    const result = await userModel.find({ username: username });
+    const result = await UserSchema.find({ username: username });
     return result;
 }
 
