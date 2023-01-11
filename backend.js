@@ -32,19 +32,15 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
+    console.log(req.body.username);
     let newUser = req.body;
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-    user_search = await userServices.findUserByUsername(username);
-    if (!username && !email && !password) res.status(400).send("Poor request");
+    user_search = await userServices.findUserByUsername(newUser.username);
+    if (!newUser.username && !newUser.password) res.status(400).send("Poor request");
     else{
         if (user_search.length > 0) res.status(400).send("username taken");
         else {
-            newUser.wins = 0;
-            newUser.gamesPlayed = 0;
-
             const savedUser = await userServices.addUser(newUser);
+            console.log("here");
             if (!savedUser) res.status(500).end();
             else res.status(201).send();
         }
@@ -53,6 +49,7 @@ app.post("/signup", async (req, res) => {
 
 app.get("/user/:username", async (req, res) => {
     const user_name = req.params["username"];
+    console.log("Garsh");
     const result = await userServices.findUserByUsername(user_name);
     if (result === undefined || result === null) {
         res.status(404).send("Resource not found.");

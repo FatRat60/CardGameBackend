@@ -21,18 +21,19 @@ const UserSchema = new mongoose.Schema(
         },
         money: {
             type: Number,
+            default: 500,
         },
         wins: {
             type: Number,
+            default: 0,
         },
         gamesPlayed: {
             type: Number,
+            default: 0,
         },
-},
-
-{ collection: "users_list "}
+}
 );
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("users_list", UserSchema);
 
 module.exports = User;

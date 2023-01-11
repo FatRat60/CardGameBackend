@@ -1,36 +1,37 @@
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://<FatRat360>:<!YpgZFz.W.B72@g>@main.x8vxshx.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://FatRat360:IL5DXwVw2UyyrinC@main.x8vxshx.mongodb.net/?retryWrites=true&w=majority";
 const UserSchema = require("./user");
 
-let dbConnection;
+let client;
 
-function setConnection(newConn) {
-    dbConnection = newConn;
-    return dbConnection;
-}
-
-function getDbConnection() {
-    if (!dbConnection) {
-        console.log("trying connection");
-        dbConnection = mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+function getClient() {
+    if (!client) {
+        console.log("Trying connection");
+        mongoose.connect(uri, 
+            {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
         });
+        mongoose.set('strictQuery', true);
+        client = mongoose.connection;
     }
-    return dbConnection;
+    
+    return client;
 }
 
 async function findUserByUsername(username) {
+    getClient();
     const result = await UserSchema.find({ username: username });
+    console.log("searched for " + username);
     return result;
 }
 
 async function addUser(user) {
-    const userModel = getDbConnection().model("user", UserSchema);
+    getClient();
     const userCheck = await findUserByUsername(user.username);
     if (userCheck.length != 0) return false;
     try {
-        const userToAdd = new userModel(user);
+        const userToAdd = new UserSchema(user);
         const savedUser = await userToAdd.save();
         return savedUser;
     } catch (error) {
