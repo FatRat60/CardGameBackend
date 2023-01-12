@@ -2,13 +2,15 @@ const express = require('express');
 const app = express();
 const port = 6969;
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: false}));
 
 const userServices = require("./models/user-services");
 const res = require("express/lib/response");
 const req = require("express/lib/request");
-const dbUser = { username: "", password: ""};
 
 app.post("/login", async (req, res) => {
     const username = req.body.username;

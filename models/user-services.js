@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://FatRat360:IL5DXwVw2UyyrinC@main.x8vxshx.mongodb.net/?retryWrites=true&w=majority";
 const UserSchema = require("./user");
+
 
 let client;
 
 function getClient() {
     if (!client) {
         console.log("Trying connection");
-        mongoose.connect(uri, 
+        mongoose.connect(process.env.MONGODB_URI, 
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
