@@ -60,6 +60,22 @@ app.get("/user/:username", async (req, res) => {
     }
 });
 
+app.post("/updateUser", async (req, res) => {
+    let newUser = req.body;
+    console.log(newUser);
+    user_search = await userServices.findUserByUsername(newUser.username);
+    if (!newUser.username) res.status(400).send("Poor Rquest");
+    else{
+        if (user_search.length == 0) res.status(400).send("User does not exist");
+        else {
+            const savedUser = await userServices.updateUser(newUser);
+            console.log(savedUser);
+            if (!savedUser) res.status(500).end();
+            else res.status(201).send();
+        }
+    }
+});
+
 app.listen(port, () => {
     console.log("REST API is listening on port " + port + ".");
 });

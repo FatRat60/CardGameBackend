@@ -45,10 +45,12 @@ async function updateUser(newUser) {
     if (userCheck.length == 0) return false;
     oldUser = userCheck[0];
     try {
+        newUser.password = oldUser.password;
         oldUser.overwrite(newUser);
         editedUser = await oldUser.save();
         return editedUser;
     } catch (error) {
+        console.log("maxie");
         console.log(error);
         return false;
     }
