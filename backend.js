@@ -21,7 +21,8 @@ app.post("/login", async (req, res) => {
     if (retrievedUser && retrievedUser.username != undefined) {
         // just compare password for now. Will decyrpt later
         if (password == retrievedUser.password){
-            res.status(200).send();
+            console.log("success");
+            res.status(200).send(retrievedUser);
         }
         else {
             // invalid password
@@ -44,7 +45,7 @@ app.post("/signup", async (req, res) => {
             const savedUser = await userServices.addUser(newUser);
             console.log("here");
             if (!savedUser) res.status(500).end();
-            else res.status(201).send();
+            else res.status(201).send(savedUser);
         }
     }
 });

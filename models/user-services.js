@@ -31,6 +31,7 @@ async function addUser(user) {
     const userCheck = await findUserByUsername(user.username);
     if (userCheck.length != 0) return false;
     try {
+        user.displayName = "temporary";
         const userToAdd = new UserSchema(user);
         const savedUser = await userToAdd.save();
         return savedUser;
