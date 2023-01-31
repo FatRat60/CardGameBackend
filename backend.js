@@ -1,4 +1,6 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const app = express();
 const port = 6969;
 
@@ -20,14 +22,17 @@ app.post("/login", async (req, res) => {
 
     if (retrievedUser && retrievedUser.username != undefined) {
         // just compare password for now. Will decyrpt later
-        if (password == retrievedUser.password){
-            console.log("success");
-            res.status(200).send(retrievedUser);
-        }
-        else {
-            // invalid password
-            res.status(401).send("Incorrect Password");
-        }
+        bcrypt.compare(password, retrievedUser.password, function(err, result) {
+            console.log("%s and %s", password, retrievedUser.username);
+            if (result){
+                console.log("success");
+                res.status(200).send(retrievedUser);
+            }
+            else {
+                // invalid password
+                res.status(401).send("Incorrect Password");
+            }
+        });
     }
     else {
         res.status(400).send("Poor request");
@@ -36,16 +41,20 @@ app.post("/login", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
     console.log(req.body.username);
-    let newUser = req.body;
+    var newUser = req.body;
     user_search = await userServices.findUserByUsername(newUser.username);
     if (!newUser.username && !newUser.password) res.status(400).send("Poor request");
     else{
         if (user_search.length > 0) res.status(400).send("username taken");
         else {
-            const savedUser = await userServices.addUser(newUser);
-            console.log("here");
-            if (!savedUser) res.status(500).end();
-            else res.status(201).send(savedUser);
+            bcrypt.hash(newUser.password, saltRounds, async function(err, hash) {
+                console.log(newUser);
+                newUser.password = hash;
+                const savedUser = await userServices.addUser(newUser);
+                console.log("here");
+                if (!savedUser) res.status(500).end();
+                else res.status(201).send(savedUser);
+            });
         }
     }
 });

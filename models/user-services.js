@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const UserSchema = require("./user");
+var randomWords = require('random-words');
 
 
 let client;
@@ -31,7 +32,7 @@ async function addUser(user) {
     const userCheck = await findUserByUsername(user.username);
     if (userCheck.length != 0) return false;
     try {
-        user.displayName = "temporary";
+        user.displayName = randomWords({ exactly: 2, join: "" }) + Math.floor(Math.random() * 100);
         const userToAdd = new UserSchema(user);
         const savedUser = await userToAdd.save();
         return savedUser;
