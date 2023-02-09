@@ -7,6 +7,8 @@ const port = 6969;
 const dotenv = require('dotenv');
 dotenv.config();
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: false}));
 
@@ -90,6 +92,27 @@ app.get("/users", async (req, res) => {
     user_search = await userServices.getAllUsers();
     console.log(user_search.length);
     res.status(200).send(user_search);
+});
+
+const calculateOrderAmount = (items) => {
+    //TODO: Add up order
+    return 1;
+};
+
+app.post("/payment", async (req, res) => {
+    const { items } = req.body;
+
+    const paymentIntent = await Stripe.paymentIntents.create({
+        amount: calculateOrderAmount(items),
+        currency: "usd",
+        automatic_payment_methods: {
+            enabled: true,
+        },
+    });
+
+    res.send({
+        clientSecret: paymentIntent.client_secret,
+    });
 });
 
 app.listen(port, () => {
