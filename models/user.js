@@ -31,7 +31,11 @@ const UserSchema = new mongoose.Schema(
             type: Number,
             default: 0,
         },
-}
+        decks: {
+            type: Array,
+            default: ["Classic"]
+        }
+    }
 );
 
 const User = mongoose.model("users_list", UserSchema);
