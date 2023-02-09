@@ -86,6 +86,12 @@ app.post("/updateUser", async (req, res) => {
     }
 });
 
+app.get("/users", async (req, res) => {
+    user_search = await userServices.getAllUsers();
+    console.log(user_search.length);
+    res.status(200).send(user_search);
+});
+
 app.listen(port, () => {
     console.log("REST API is listening on port " + port + ".");
 });

@@ -27,6 +27,12 @@ async function findUserByUsername(username) {
     return result;
 }
 
+async function getAllUsers() {
+    getClient();
+    const result = await UserSchema.find({}, 'displayName money wins gamesPlayed');
+    return result;
+}
+
 async function addUser(user) {
     getClient();
     const userCheck = await findUserByUsername(user.username);
@@ -59,5 +65,6 @@ async function updateUser(newUser) {
 }
 
 exports.findUserByUsername = findUserByUsername;
+exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
 exports.updateUser = updateUser;
