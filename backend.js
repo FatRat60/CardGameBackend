@@ -73,13 +73,15 @@ app.get("/user/:username", async (req, res) => {
 });
 
 app.post("/updateUser", async (req, res) => {
-    let newUser = req.body;
+    var newUser = req.body;
     console.log(newUser);
     user_search = await userServices.findUserByUsername(newUser.username);
     if (!newUser.username) res.status(400).send("Poor Rquest");
     else{
         if (user_search.length == 0) res.status(400).send("User does not exist");
         else {
+            newUser.decks = user_search[0].decks;
+            console.log(newUser.decks);
             const savedUser = await userServices.updateUser(newUser);
             console.log(savedUser);
             if (!savedUser) res.status(500).end();
