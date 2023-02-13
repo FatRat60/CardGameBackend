@@ -33,7 +33,9 @@ const UserSchema = new mongoose.Schema(
         },
         decks: {
             type: Array,
-            default: ["Classic"]
+            default: [{id: 1,
+                        image: "defaultCard",
+                        name: "Classic"}]
         }
     }
 );
