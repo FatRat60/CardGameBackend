@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const UserSchema = require("./user");
+const SaleItemSchema = require("./SaleItem");
 var randomWords = require('random-words');
 
 
@@ -64,7 +65,19 @@ async function updateUser(newUser) {
     }
 }
 
+async function randomizeStore() {
+    getClient();
+    const allItems = await SaleItemSchema.find({});
+    result = await SaleItemSchema.find({name: "Anime"});
+    for (i = 1; i < 5; i++)
+    {
+        result[i] = allItems[Math.floor(Math.random() * allItems.length)];
+    }
+    return result;
+}
+
 exports.findUserByUsername = findUserByUsername;
 exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
 exports.updateUser = updateUser;
+exports.randomizeStore = randomizeStore;

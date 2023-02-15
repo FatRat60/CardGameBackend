@@ -50,10 +50,9 @@ app.post("/signup", async (req, res) => {
         if (user_search.length > 0) res.status(400).send("username taken");
         else {
             bcrypt.hash(newUser.password, saltRounds, async function(err, hash) {
-                console.log(newUser);
                 newUser.password = hash;
                 const savedUser = await userServices.addUser(newUser);
-                console.log("here");
+                console.log(savedUser);
                 if (!savedUser) res.status(500).end();
                 else res.status(201).send(savedUser);
             });
@@ -115,6 +114,12 @@ app.post("/payment", async (req, res) => {
     res.send({
         clientSecret: paymentIntent.client_secret,
     });
+});
+
+app.get("/store", async (req, res) => {
+    storeItems = await userServices.randomizeStore();
+    console.log(storeItems);
+    res.status(200).send(storeItems);
 });
 
 app.listen(port, () => {
