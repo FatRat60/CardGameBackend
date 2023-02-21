@@ -76,8 +76,22 @@ async function randomizeStore() {
     return result;
 }
 
+async function getStoreItem(name) {
+    getClient();
+    const result = await SaleItemSchema.find({ name: name });
+    if (result.length > 0){
+        console.log("found it");
+        return result[0];
+    }
+    else{
+        console.log("Couldn't find it");
+        return false;
+    }
+}
+
 exports.findUserByUsername = findUserByUsername;
 exports.getAllUsers = getAllUsers;
 exports.addUser = addUser;
 exports.updateUser = updateUser;
 exports.randomizeStore = randomizeStore;
+exports.getStoreItem = getStoreItem;

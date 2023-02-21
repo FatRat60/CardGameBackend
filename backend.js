@@ -116,9 +116,15 @@ app.post("/payment", async (req, res) => {
     });
 });
 
-app.get("/store", async (req, res) => {
-    storeItems = await userServices.randomizeStore();
-    console.log(storeItems);
+app.post("/store", async (req, res) => {
+    const items = req.body.items;
+    var storeItems = [];
+    for (i = 0; i < items.length; i++){
+        result = await userServices.getStoreItem(items[i]);
+        if (result)
+            storeItems.push(result);
+    }
+    console.log(storeItems.length);
     res.status(200).send(storeItems);
 });
 
