@@ -17,6 +17,10 @@ const SaleItemSchema = new mongoose.Schema(
             required: true,
             trim: true
         },
+        price: {
+            type: Number,
+            required: true,
+        },
     }
 );
 
