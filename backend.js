@@ -97,18 +97,16 @@ app.get("/users", async (req, res) => {
 
 const calculateOrderAmount = (items) => {
     //TODO: Add up order
-    return 1;
+    return 100;
 };
 
 app.post("/payment", async (req, res) => {
     const { items } = req.body;
-
-    const paymentIntent = await Stripe.paymentIntents.create({
+    console.log("paying");
+    const paymentIntent = await stripe.paymentIntents.create({
         amount: calculateOrderAmount(items),
         currency: "usd",
-        automatic_payment_methods: {
-            enabled: true,
-        },
+        payment_method_types: ['card'],
     });
 
     res.send({
